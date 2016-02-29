@@ -1,6 +1,6 @@
 ---
 - name: Cloning local modules
-  git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{modules_dir}}/{{item}}" update=no
+  git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{modules_dir}}/{{item}}" update=yes
   with_items: "{{ local_mods }}"
 
 - name: enable local modules
@@ -8,3 +8,10 @@
   args:
     chdir: "{{ drupal_core_path }}"
   with_items: "{{ local_mods }}"
+
+
+- name: Clone mjordan migration tool
+  git:
+    clone: yes
+    repo: https://github.com/mjordan/islandora_cdm_api.git
+    dest: "{{ modules_dir }}/islandora_cdm_api"
