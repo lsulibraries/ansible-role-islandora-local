@@ -1,0 +1,7 @@
+---
+local_mods: 
+    - solr_lsu_settings
+    - metadata_display_lsu
+    - islandora_mods_display
+
+local_repo: https://github.com/lsulibraries/
