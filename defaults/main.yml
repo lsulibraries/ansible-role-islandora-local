@@ -3,5 +3,7 @@ local_mods:
     - solr_lsu_settings
     - metadata_display_lsu
     - blocks_lsu
+    - islandora_mods_display
+    - collection_landing_page
 
 local_repo: https://github.com/lsulibraries/
