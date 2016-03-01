@@ -5,5 +5,6 @@ local_mods:
     - blocks_lsu
     - islandora_mods_display
     - collection_landing_page
+    - islandora_collection_landing_pages
 
 local_repo: https://github.com/lsulibraries/
