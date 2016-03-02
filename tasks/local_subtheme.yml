@@ -1,4 +1,4 @@
 ---
 - name: Cloning local subtheme
-  git: clone=yes repo="https://github.com/lsulibraries/subtheme_lsu.git" dest="/var/www/drupal/sites/all/themes" update=yes
+  git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{themes_dir}}/{{item}}" update=yes
 
