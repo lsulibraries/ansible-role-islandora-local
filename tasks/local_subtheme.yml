@@ -1,4 +1,5 @@
 ---
+themes_dir: "{{ drupal_core_path  }}/sites/all/themes"
 - name: Cloning local subtheme
   git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{themes_dir}}/{{item}}" update=yes
   with_items: "{{ local_subtheme }}"
