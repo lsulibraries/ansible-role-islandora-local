@@ -1,0 +1,23 @@
+---
+
+- name: Clone mjordan migration tool
+  git:
+    clone: yes
+    repo: https://github.com/lsulibraries/islandora_migrate_cdm_collections.git
+    dest: "{{ modules_dir }}/islandora_migrate_cdm_collections"
+
+- name: enable migration mod
+  command: 'drush en -y islandora_migrate_cdm_collections'
+  args:
+    chdir: "{{ drupal_core_path }}"
+
+- name: create collections
+  command: 'drush --user=admin cicfc --namespace=ldl --parent=islandora:root  --input=/vagrant/collections/collection_data.tsv --create_node_with_content_type=landing_page'
+  args:
+    chdir: "{{ drupal_core_path }}"
+
+- name: set front page
+  command: 'drush vset site_frontpage islandora-collection-landing-pages'
+  args:
+    chdir: "{{ drupal_core_path }}"
+    

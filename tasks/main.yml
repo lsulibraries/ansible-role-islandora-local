@@ -1,0 +1,21 @@
+---
+- include: local_subtheme.yml
+- include: local_mods.yml
+- include: cdmMigrate.yml
+
+- name: reset permissions in modules dir
+  file:
+    state: directory
+    path: "{{ drupal_core_path }}/sites/all/modules"
+    owner: www-data
+    group: www-data
+    recurse: true
+
+- name: reset permissions in themes dir
+	file:
+		state: directory
+		path: "{{ drupal_core_path }}/sites/all/themes"
+		owner: www-data
+		group: www-data
+		recurse: true
+

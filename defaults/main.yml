@@ -1,0 +1,12 @@
+---
+local_mods: 
+    - solr_lsu_settings
+    - metadata_display_lsu
+    - blocks_lsu
+    - collection_landing_page
+    - islandora_collection_landing_pages
+
+local_subtheme:
+    - subtheme_lsu
+
+local_repo: https://github.com/lsulibraries/
