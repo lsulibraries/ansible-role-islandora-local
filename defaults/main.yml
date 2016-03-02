@@ -5,6 +5,8 @@ local_mods:
     - blocks_lsu
     - islandora_collection_landing_pages
 
+themes_dir: "{{ drupal_core_path  }}/sites/all/themes"
+
 local_subtheme:
     - subtheme_lsu
 
