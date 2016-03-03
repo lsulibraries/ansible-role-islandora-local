@@ -7,7 +7,7 @@ local_mods:
     - collection_landing_page
     - islandora_collection_landing_pages
 
-themes_dir: "{{ drupal_core_path  }}/sites/all/themes"
+themes_dir: "{{ drupal_core_path }}/sites/all/themes"
 
 local_subtheme:
     - subtheme_lsu
