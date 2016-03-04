@@ -1,4 +1,5 @@
 ---
+- include: local_subtheme.yml
 - include: local_mods.yml
 - include: cdmMigrate.yml
 - include: local_vars.yml
@@ -11,3 +12,32 @@
     group: www-data
     recurse: true
 
+- name: reset permissions in themes dir
+  file:
+    state: directory
+    path: "{{ drupal_core_path }}/sites/all/themes"
+    owner: www-data
+    group: www-data
+    recurse: true
+
+- name: Cloning local subtheme
+  git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{themes_dir}}/{{item}}" update=yes
+  with_items: "{{ local_subtheme }}"
+
+- name: Cloning local modules
+  git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{modules_dir}}/{{item}}" update=yes
+  with_items: "{{ local_mods }}"
+
+- name: reset permissions in modules dir
+  file:
+    state: directory
+    path: "{{ drupal_core_path }}/sites/all/modules"
+    owner: www-data
+    group: www-data
+    recurse: true
+
+- name: Clone mjordan migration tool
+  git:
+    clone: yes
+    repo: https://github.com/mjordan/islandora_cdm_api.git
+    dest: "{{ modules_dir }}/islandora_cdm_api"

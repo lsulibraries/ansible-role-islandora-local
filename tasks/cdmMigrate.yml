@@ -15,4 +15,3 @@
   command: 'drush --user=admin cicfc --namespace=ldl --parent=islandora:root  --input=/vagrant/collections/collection_data.tsv --create_node_with_content_type=landing_page'
   args:
     chdir: "{{ drupal_core_path }}"
-
