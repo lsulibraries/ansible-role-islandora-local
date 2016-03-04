@@ -16,8 +16,3 @@
   args:
     chdir: "{{ drupal_core_path }}"
 
-- name: set front page
-  command: 'drush vset site_frontpage islandora-collection-landing-pages'
-  args:
-    chdir: "{{ drupal_core_path }}"
-    
