@@ -14,3 +14,13 @@
   command: 'drush vset site_name {{ drupal_site_name  }}'
   args:
     chdir: "{{ drupal_core_path }}"
+
+- name: limit solr fields
+  command: 'drush vset islandora_solr_limit_result_fields 1'
+  args:
+    chdir: "{{ drupal_core_path }}"
+
+- name: set metadata display
+  command: 'drush vset islandora_metadata_display islandora_solr_metadata'
+  args:
+    chdir: "{{ drupal_core_path }}"
