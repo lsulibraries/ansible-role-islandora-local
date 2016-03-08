@@ -24,10 +24,6 @@
   git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{themes_dir}}/{{item}}" update=yes
   with_items: "{{ local_subtheme }}"
 
-- name: Cloning local modules
-  git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{modules_dir}}/{{item}}" update=yes
-  with_items: "{{ local_mods }}"
-
 - name: reset permissions in modules dir
   file:
     state: directory
@@ -41,3 +37,8 @@
     clone: yes
     repo: https://github.com/mjordan/islandora_cdm_api.git
     dest: "{{ modules_dir }}/islandora_cdm_api"
+
+- name: Cloning local modules
+  git: clone=yes  repo="https://github.com/lsulibraries/{{item}}.git" dest="{{modules_dir}}/{{item}}" update=yes
+  with_items: "{{ local_mods }}"
+
