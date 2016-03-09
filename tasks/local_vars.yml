@@ -18,4 +18,4 @@
 - name: revert block setting
   command: 'drush fr blocks_lsu' 
   args:
-    chdir: "{{ drupal_core_path }}
+    chdir: "{{ drupal_core_path }}"
