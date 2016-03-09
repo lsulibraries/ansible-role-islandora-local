@@ -33,4 +33,3 @@
 - name: Cloning local modules
   git: clone=yes  repo="https://github.com/lsulibraries/{{item}}.git" dest="{{modules_dir}}/{{item}}" update=yes
   with_items: "{{ local_mods }}"
-

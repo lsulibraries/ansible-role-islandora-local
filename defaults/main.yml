@@ -2,9 +2,9 @@
 local_mods: 
     - solr_lsu_settings
     - metadata_display_lsu
-    - blocks_lsu
     - collection_landing_page
     - islandora_collection_landing_pages
+    - blocks_lsu
 
 themes_dir: "{{ drupal_core_path }}/sites/all/themes"
 drupal_site_name: "LDLandora"
