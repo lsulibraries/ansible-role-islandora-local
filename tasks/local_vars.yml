@@ -14,8 +14,19 @@
   args:
     chdir: "{{ drupal_core_path }}"
 
+- name: limit solr fields
+  command: 'drush vset islandroa_solr_limit_result_fields 1'
+  args:
+    chdir: "{{ drupal_core_path }}"
 
-#- name: revert block setting
-#  command: 'drush features-revert blocks_lsu'
+- name: set metadata display
+  command: 'drush vset islandora_metadata_display islandora_solr_metadata'
+  args: 
+    chdir: "{{ drupal_core_path }}"
+
+- name: revert block setting
+  command: 'drush features-revert blocks_lsu'
+  args:
+    chdir: "{{ drupal_core_path }}"
 # this command features-revert (which works fine in cli once provisioned) doesn't work here. drush can't find features-revert command
 
