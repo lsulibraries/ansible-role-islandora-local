@@ -14,6 +14,8 @@
   args:
     chdir: "{{ drupal_core_path }}"
 
+
 #- name: revert block setting
 #  command: 'drush features-revert blocks_lsu'
 # this command features-revert (which works fine in cli once provisioned) doesn't work here. drush can't find features-revert command
+
