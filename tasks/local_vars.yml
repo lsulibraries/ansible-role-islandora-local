@@ -14,3 +14,8 @@
   command: 'drush vset site_name {{ drupal_site_name  }}'
   args:
     chdir: "{{ drupal_core_path }}"
+
+- name: revert block setting
+  command: 'drush fr blocks_lsu' 
+  args:
+    chdir: "{{ drupal_core_path }}
