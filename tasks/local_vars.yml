@@ -15,7 +15,7 @@
     chdir: "{{ drupal_core_path }}"
 
 - name: limit solr fields
-  command: 'drush vset islandroa_solr_limit_result_fields 1'
+  command: 'drush vset islandora_solr_limit_result_fields 1'
   args:
     chdir: "{{ drupal_core_path }}"
 
