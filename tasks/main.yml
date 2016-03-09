@@ -24,14 +24,6 @@
   git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{themes_dir}}/{{item}}" update=yes
   with_items: "{{ local_subtheme }}"
 
-- name: reset permissions in modules dir
-  file:
-    state: directory
-    path: "{{ drupal_core_path }}/sites/all/modules"
-    owner: www-data
-    group: www-data
-    recurse: true
-
 - name: Clone mjordan migration tool
   git:
     clone: yes
