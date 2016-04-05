@@ -1,6 +1,6 @@
 ---
 local_mods: 
-    - solr_settings_lsu
+    - solr_lsu_settings
     - metadata_display_lsu
     - collection_landing_page
     - islandora_collection_landing_pages
@@ -11,4 +11,4 @@ themes_dir: "{{ drupal_core_path }}/sites/all/themes"
 local_subtheme:
     - subtheme_lsu
 
-drupal_site_name: "LDL Islandora"
+drupal_site_name: 'LDL\ Islandora'
