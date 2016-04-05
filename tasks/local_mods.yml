@@ -1,7 +1,6 @@
 ---
 - name: Cloning local modules
-  git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{modules_dir}}/{{item}}" update=yes
-  with_items: "{{ local_mods }}"
+  git: clone=yes repo="https://github.com/lsulibraries/islandora-features.git" dest="{{modules_dir}}/islandora-features" update=yes
 
 - name: enable local modules
   shell: "drush -y en {{ item }}"
