@@ -1,7 +1,9 @@
 ---
 - include: local_subtheme.yml
 - include: local_mods.yml
+# comment out for secondary provision
 - include: cdmMigrate.yml
+
 - include: local_vars.yml
 
 - name: reset permissions in modules dir
@@ -21,9 +23,8 @@
     recurse: true
 
 - name: Cloning local subtheme
-  git: clone=yes repo="https://github.com/lsulibraries/{{item}}.git" dest="{{themes_dir}}/{{item}}" update=yes
-  with_items: "{{ local_subtheme }}"
-
+  git: clone=yes  repo="https://github.com/lsulibraries/subtheme_lsu.git" dest="{{themes_dir}}/" update=yes
+ 
 - name: Clone mjordan migration tool
   git:
     clone: yes
@@ -31,5 +32,4 @@
     dest: "{{ modules_dir }}/islandora_cdm_api"
 
 - name: Cloning local modules
-  git: clone=yes  repo="https://github.com/lsulibraries/{{item}}.git" dest="{{modules_dir}}/{{item}}" update=yes
-  with_items: "{{ local_mods }}"
+  git: clone=yes  repo="https://github.com/lsulibraries/islandora-features.git" dest="{{modules_dir}}/" update=yes
