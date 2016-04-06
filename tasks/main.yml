@@ -2,7 +2,7 @@
 - include: local_subtheme.yml
 - include: local_mods.yml
 # comment out for secondary provision
-#- include: cdmMigrate.yml
+- include: cdmMigrate.yml
 - include: local_vars.yml
 
 - name: reset permissions in modules dir
@@ -30,5 +30,5 @@
     repo: https://github.com/mjordan/islandora_cdm_api.git
     dest: "{{ modules_dir }}/islandora_cdm_api"
 
-- name: Cloning local modules
+- name: Cloning local features
   git: clone=yes  repo="https://github.com/lsulibraries/islandora-features.git" dest="{{modules_dir}}/islandora-features" update=yes

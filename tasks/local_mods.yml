@@ -1,9 +1,15 @@
 ---
-- name: Cloning local modules
+- name: Cloning local features
   git: clone=yes repo="https://github.com/lsulibraries/islandora-features.git" dest="{{modules_dir}}/islandora-features" update=yes
 
 - name: enable local modules
   shell: "drush -y en {{ item }}"
   args:
     chdir: "{{ drupal_core_path }}"
+  with_items: "{{ local_features }}"
+
+- name: get local mods
+  git:
+    clone: yes
+    repo: "https://github.com/lsulibraries/{{ item }}"
   with_items: "{{ local_mods }}"

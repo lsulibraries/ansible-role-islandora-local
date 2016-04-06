@@ -1,10 +1,13 @@
 ---
-local_mods: 
+local_features: 
     - solr_lsu_settings
     - metadata_display_lsu
     - collection_landing_page
     - islandora_collection_landing_pages
     - blocks_lsu
+
+local_mods:
+    - islandora_mods_display
 
 themes_dir: "{{ drupal_core_path }}/sites/all/themes"
 
