@@ -17,3 +17,5 @@ local_subtheme:
 
 drupal_site_name: 'LDL\ Islandora'
 fedora_namespace: "default_namespace"
+
+collections_file: collection_data.tsv

@@ -11,7 +11,12 @@
   args:
     chdir: "{{ drupal_core_path }}"
 
+- name: copy collections to target
+  unarchive:
+    src: collections/collections.zip
+    dest: "{{ work_dir }}/"
+
 - name: create collections
-  command: 'drush --user=admin cicfc --namespace={{ fedora_namespace }} --parent=islandora:root  --input=/vagrant/collections/collection_data.tsv --create_node_with_content_type=landing_page'
+  command: 'drush --user=admin cicfc --namespace={{ fedora_namespace }} --parent=islandora:root  --input={{ work_dir }}/collections/{{ collections_file }} --create_node_with_content_type=landing_page'
   args:
     chdir: "{{ drupal_core_path }}"
