@@ -1,7 +1,5 @@
 ---
-- include: local_subtheme.yml
-- include: local_mods.yml
-# comment out for secondary provision
+ include: local_mods.yml
 - include: cdmMigrate.yml
 - include: local_vars.yml
 
@@ -21,14 +19,6 @@
     group: www-data
     recurse: true
 
-- name: Cloning local subtheme
-  git: clone=yes  repo="https://github.com/lsulibraries/subtheme_lsu.git" dest="{{themes_dir}}/subtheme_lsu" update=yes
- 
-- name: Clone mjordan migration tool
-  git:
-    clone: yes
-    repo: https://github.com/mjordan/islandora_cdm_api.git
-    dest: "{{ modules_dir }}/islandora_cdm_api"
 
 - name: Cloning local features
   git: clone=yes  repo="https://github.com/lsulibraries/islandora-features.git" dest="{{modules_dir}}/islandora-features" update=yes
