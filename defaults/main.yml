@@ -8,6 +8,7 @@ local_features:
 
 local_mods:
     - islandora_mods_display
+    - islandora_mods_display_changes
 
 themes_dir: "{{ drupal_core_path }}/sites/all/themes"
 
