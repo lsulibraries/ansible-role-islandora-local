@@ -22,3 +22,6 @@
 
 - name: Cloning local features
   git: clone=yes  repo="https://github.com/lsulibraries/islandora-features.git" dest="{{modules_dir}}/islandora-features" update=yes
+
+- name: get custom subthemes
+  git: clone=yes repo="https://github.com/lsulibraries/multi_subtheme_dev.git" dest="{{drupal_main_path}}/sites/all/themes/multi_subtheme_dev" update=no
