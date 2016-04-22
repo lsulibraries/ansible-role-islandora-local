@@ -1,6 +1,6 @@
 ---
 - include: local_mods.yml
-- include: cdmMigrate.yml
+#- include: cdmMigrate.yml
 - include: local_vars.yml
 
 - name: reset permissions in modules dir

@@ -17,7 +17,7 @@ local_subtheme:
 
 
 drupal_site_name: 'LDL\ Islandora'
-fedora_namespace: "ldl"
+fedora_namespace: "use_alias"
 
 collections_file: collection_data.tsv
 cdm_create_collections: true
