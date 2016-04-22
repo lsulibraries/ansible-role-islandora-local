@@ -5,7 +5,7 @@ local_features:
     - collection_landing_page
     - islandora_collection_landing_pages
     - blocks_lsu
-    - islandora_mods_display_changes
+#    - islandora_mods_display_changes
 
 local_mods:
     - islandora_mods_display
@@ -17,7 +17,7 @@ local_subtheme:
 
 
 drupal_site_name: 'LDL\ Islandora'
-fedora_namespace: "default_namespace"
+fedora_namespace: "ldl"
 
 collections_file: collection_data.tsv
 cdm_create_collections: true

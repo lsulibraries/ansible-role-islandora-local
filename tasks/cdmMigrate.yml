@@ -5,6 +5,7 @@
     clone: yes
     repo: https://github.com/lsulibraries/islandora_migrate_cdm_collections.git
     dest: "{{ modules_dir }}/islandora_migrate_cdm_collections"
+    update: no
 
 - name: enable migration mod
   command: 'drush en -y islandora_migrate_cdm_collections'
