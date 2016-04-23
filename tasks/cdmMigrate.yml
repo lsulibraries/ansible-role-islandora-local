@@ -18,7 +18,7 @@
     dest: "{{ work_dir }}/"
 
 - name: create collections
-  command: 'drush --user=admin cicfc --namespace={{ fedora_namespace }} --parent=islandora:root  --input={{ work_dir }}/collections/{{ collections_file }} --create_node_with_content_type=landing_page'
+  command: 'drush --user=admin cicfc --namespace=use_alias --parent=islandora:root  --input={{ work_dir }}/collections/{{ collections_file }} --create_node_with_content_type=landing_page'
   args:
     chdir: "{{ drupal_core_path }}"
   when: cdm_create_collections
