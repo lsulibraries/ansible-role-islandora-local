@@ -22,10 +22,10 @@
 - name: Cloning local features
   git: clone=yes  repo="https://github.com/lsulibraries/islandora-features.git" dest="{{modules_dir}}/islandora-features" update=yes
 
-- name: get custom subthemes
-  git: clone=yes repo="https://github.com/lsulibraries/multi_subtheme_dev.git" dest="{{drupal_core_path}}/sites/all/themes/multi_subtheme_dev" update=no
+#- name: get custom subthemes
+#  git: clone=yes repo="https://github.com/lsulibraries/multi_subtheme_dev.git" dest="{{drupal_core_path}}/sites/all/themes/multi_subtheme_dev" update=no
 
-- name: enable default theme
-  command: 'drush en -y subtheme_lsu'
-  args:
-    chdir: "{{ drupal_core_path }}"
+#- name: enable default theme
+#  command: 'drush en -y subtheme_lsu'
+#  args:
+#    chdir: "{{ drupal_core_path }}"
