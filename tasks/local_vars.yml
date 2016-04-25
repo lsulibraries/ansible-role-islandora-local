@@ -4,10 +4,10 @@
   args:
     chdir: "{{ drupal_core_path }}"
     
-- name: set theme
-  command: 'drush vset theme_default subtheme_lsu'
-  args:
-    chdir: "{{ drupal_core_path }}"
+#- name: set theme
+#  command: 'drush vset theme_default subtheme_lsu'
+#  args:
+#    chdir: "{{ drupal_core_path }}"
     
 - name: set site name
   command: 'drush vset site_name {{ drupal_site_name  }}'
