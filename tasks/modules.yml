@@ -1,0 +1,18 @@
+---
+- name: Fetch modules via drush
+  command: "drush -n dl {{ drush_dl_able_modules }}"
+  args:
+    chdir: "{{drupal_core_path }}"
+
+- name: Clone mods
+  git: 
+    repo: "{{ item.repo }}"
+    dest: "{{ drupal_core_path }}/sites/all/modules/{{ item.dirname }}"
+  with_items: "{{ modules_to_clone }}"
+
+
+- name: Enable mods
+  command: 'drush -y  en {{ modules_to_enable }}'
+  args:
+    chdir: "{{ drupal_core_path }}/sites/{{ item }}"
+  with_items: "{{ institutions }}"
