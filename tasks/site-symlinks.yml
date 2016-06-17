@@ -1,0 +1,7 @@
+---
+- name: Link each site folder to its fqdn
+  file:
+    state: link
+    path: "{{ drupal_core_path }}/sites/{{ item }}.{{ fqdn_suffix }}"
+    src: "{{ drupal_core_path }}/sites/{{ item }}"
+  with_items: "{{ institutions }}"

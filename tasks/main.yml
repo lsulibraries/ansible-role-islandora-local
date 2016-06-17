@@ -2,6 +2,9 @@
 - include: modules.yml
 - include: features.yml
 - include: variables.yml
+- include: site-symlinks.yml
+- include: reverse-proxy.yml
+  when: drupal_reverse_proxy
 
 - name: reset permissions in modules dir
   file:

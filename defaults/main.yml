@@ -1,5 +1,7 @@
 ---
+fqdn_suffix: library.local
 drush_dl_able_modules: features blockexport diff
+drupal_reverse_proxy: true
 
 modules_to_clone:
   - { repo: 'https://github.com/lsulibraries/islandora_mods_display', dirname: islandora_mods_display }
