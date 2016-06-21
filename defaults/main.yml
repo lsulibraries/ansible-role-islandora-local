@@ -5,6 +5,7 @@ drupal_reverse_proxy: true
 
 modules_to_clone:
   - { repo: 'https://github.com/lsulibraries/islandora_mods_display', dirname: islandora_mods_display }
+  - { repo: 'https://github.com/mjordan/islandora_bulk_delete', dirname: 'islandora_bulk_delete'}
 
 modules_to_enable: features blockexport diff islandora_mods_display
 
