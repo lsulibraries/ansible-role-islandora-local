@@ -20,3 +20,9 @@
   args:
     chdir: "{{ drupal_core_path }}/sites/{{ item }}"
   with_items: "{{ institutions }}"
+
+- name: clear drush cache
+  command: "drush cc all"
+  args:
+    chdir: "{{ drupal_core_path }}/sites/{{ item }}"
+  with_items: "{{ institutions }}"

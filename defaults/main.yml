@@ -1,13 +1,13 @@
 ---
 fqdn_suffix: library.local
-drush_dl_able_modules: features blockexport diff
 drupal_reverse_proxy: true
 
 modules_to_clone:
   - { repo: 'https://github.com/lsulibraries/islandora_mods_display', dirname: islandora_mods_display }
   - { repo: 'https://github.com/mjordan/islandora_bulk_delete', dirname: 'islandora_bulk_delete'}
 
-modules_to_enable: features blockexport diff islandora_mods_display
+drush_dl_able_modules: features blockexport diff module_filter
+modules_to_enable:     features blockexport diff module_filter islandora_mods_display
 
 local_features: 
   - solr_lsu_settings
@@ -16,9 +16,10 @@ local_features:
   - islandora_collection_landing_pages
   - blocks_lsu
   - islandora_mods_display
+  - roles_and_permissions
 
 site_names:
-  - { inst: hnoc, name: hnoc}
+  - { inst: hnoc, name: 'Historic New Orleans Collection' }
   - { inst: latech, name: latech}
   - { inst: loyno, name: loyno}
   - { inst: lsm, name: lsm}
