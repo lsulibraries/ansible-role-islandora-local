@@ -6,8 +6,8 @@ modules_to_clone:
   - { repo: 'https://github.com/lsulibraries/islandora_mods_display', dirname: islandora_mods_display }
   - { repo: 'https://github.com/mjordan/islandora_bulk_delete', dirname: 'islandora_bulk_delete'}
 
-drush_dl_able_modules: features blockexport diff module_filter
-modules_to_enable:     features blockexport diff module_filter islandora_mods_display
+drush_dl_able_modules: features blockexport diff module_filter google_analytics google_analytics_reports context delta omega_tools
+modules_to_enable:     features blockexport diff module_filter googleanalytics google_analytics_reports context delta omega_tools islandora_mods_display 
 
 local_features: 
   - solr_lsu_settings
@@ -41,3 +41,4 @@ simple_vars:
   - { name: site_frontpage, value: islandora-collection-landing-pages }
   - { name: islandora_solr_limit_result_fields, value: 1 }
   - { name: islandora_metadata_display, value: islandora }
+  - { name: theme_default, value: ldl }

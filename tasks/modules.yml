@@ -12,7 +12,7 @@
 
 
 - name: Enable mods
-  command: 'drush -y  en {{ modules_to_enable }}'
+  command: 'drush -y en {{ modules_to_enable }}'
   args:
     chdir: "{{ drupal_core_path }}/sites/{{ item }}"
   with_items: "{{ institutions }}"

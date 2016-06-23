@@ -1,5 +1,6 @@
 ---
 - include: modules.yml
+- include: theme.yml
 - include: features.yml
 - include: variables.yml
 - include: site-symlinks.yml

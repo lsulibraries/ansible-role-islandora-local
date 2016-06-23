@@ -15,7 +15,7 @@
     - "{{ institutions }}"
     - "{{ local_features }}"
 
-- name: revert block setting
+- name: revert all features
   command: 'drush fr -y' 
   args:
     chdir: "{{ drupal_core_path }}/sites/{{ item }}"
