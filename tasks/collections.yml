@@ -1,7 +1,0 @@
----
-- name: Set namespace whitelist in main Islandora configuration.
-  command: "drush vset islandora_pids_allowed {{ item.value }} "
-  args:
-    chdir: "{{ drupal_core_path }}/sites/{{ item.name }}.{{ fqdn_suffix }}"
-  with_items: 
-    - "{{ whitelist_by_collection }}"

@@ -7,12 +7,6 @@
     - "{{ institutions }}"
     - "{{ simple_vars }}"
 
-#- name: set theme
-#  command: 'drush vset theme_default subtheme_lsu'
-#  args:
-#    chdir: "{{ drupal_core_path }}/sites/{{ item }}"  
-#  with_items: "{{ institutions }}"
-
 - name: set site name
   command: 'drush vset site_name {{ item.name  }}'
   args:
