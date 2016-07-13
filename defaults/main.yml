@@ -12,7 +12,6 @@ modules_to_enable:     features blockexport diff module_filter googleanalytics g
 local_features: 
   - solr_lsu_settings
   - metadata_display_lsu
-  - collection_landing_page
   - islandora_collection_landing_pages
   - blocks_lsu
   - islandora_mods_display
@@ -41,5 +40,4 @@ simple_vars:
   - { name: site_frontpage, value: islandora-collection-landing-pages }
   - { name: islandora_solr_limit_result_fields, value: 1 }
   - { name: islandora_metadata_display, value: islandora }
-  - { name: theme_default, value: ldl }
   - { name: islandora_namespace_restriction_enforced, value: 1 }
