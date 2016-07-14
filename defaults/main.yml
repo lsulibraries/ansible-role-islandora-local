@@ -13,7 +13,7 @@ local_features:
   - solr_lsu_settings
   - metadata_display_lsu
   - islandora_collection_landing_pages
-  - blocks_lsu
+  - block_setting_ldl_theme
   - islandora_mods_display
   - roles_and_permissions
 
