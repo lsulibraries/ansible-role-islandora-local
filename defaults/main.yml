@@ -7,15 +7,17 @@ modules_to_clone:
   - { repo: 'https://github.com/mjordan/islandora_bulk_delete', dirname: 'islandora_bulk_delete'}
 
 drush_dl_able_modules: features blockexport diff module_filter google_analytics google_analytics_reports context delta omega_tools
-modules_to_enable:     features blockexport diff module_filter googleanalytics google_analytics_reports context delta delta_* omega_tools islandora_mods_display 
+
+modules_to_enable:     features blockexport diff module_filter googleanalytics google_analytics_reports context delta* omega_tools islandora_mods_display 
+
 
 local_features: 
   - solr_lsu_settings
   - metadata_display_lsu
   - islandora_collection_landing_pages
-  - block_setting_ldl_theme
   - islandora_mods_display
   - roles_and_permissions
+  - block_setting_ldl_theme
 
 site_names:
   - { inst: hnoc, name: 'The Historic New Orleans Collection' }
