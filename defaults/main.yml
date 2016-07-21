@@ -7,34 +7,36 @@ modules_to_clone:
   - { repo: 'https://github.com/mjordan/islandora_bulk_delete', dirname: 'islandora_bulk_delete'}
 
 drush_dl_able_modules: features blockexport diff module_filter google_analytics google_analytics_reports context delta omega_tools
-modules_to_enable:     features blockexport diff module_filter googleanalytics google_analytics_reports context delta delta_blocks delta_color delta_ui omega_tools islandora_mods_display 
+
+modules_to_enable:     features blockexport diff module_filter googleanalytics google_analytics_reports context delta* omega_tools islandora_mods_display 
+
 
 local_features: 
   - solr_lsu_settings
   - metadata_display_lsu
   - islandora_collection_landing_pages
-  - blocks_lsu
   - islandora_mods_display
   - roles_and_permissions
+  - block_setting_ldl_theme
 
 site_names:
-  - { inst: hnoc, name: 'Historic New Orleans Collection' }
-  - { inst: latech, name: latech}
-  - { inst: loyno, name: loyno}
-  - { inst: lsm, name: lsm}
-  - { inst: lsu, name: lsu}
-  - { inst: lsuhsc, name: lsuhsc}
-  - { inst: lsuhscs, name: lsuhscs}
-  - { inst: mcneese, name: mcneese}
-  - { inst: nicholls, name: nicholls}
-  - { inst: state, name: state}
-  - { inst: subr, name: subr}
+  - { inst: hnoc, name: 'The Historic New Orleans Collection' }
+  - { inst: latech, name: 'Louisiana Tech University'}
+  - { inst: loyno, name: 'Loyola University New Orleans'}
+  - { inst: lsm, name: 'Louisiana State Museum'}
+  - { inst: lsu, name: 'Louisiana State University'}
+  - { inst: lsuhsc, name: 'Louisiana State University Health Sciences Center'}
+  - { inst: lsuhscs, name: 'Louisiana State University Health Sciences Center Shreveport'}
+  - { inst: mcneese, name: 'McNeese State University'}
+  - { inst: nicholls, name: 'Nicholls State University'}
+  - { inst: state, name: 'State Library Of Louisiana'}
+  - { inst: subr, name: 'Southern University'}
   - { inst: tahil, name: tahil}
-  - { inst: tulane, name: tulane}
-  - { inst: ull, name: ull}
-  - { inst: ulm, name: ulm}
-  - { inst: uno, name: uno}
-  - { inst: ldl, name: ldl}
+  - { inst: tulane, name: 'Tulane University'}
+  - { inst: ull, name: 'University of Louisiana at Lafayette'}
+  - { inst: ulm, name: 'University of Louisiana at Monroe'}
+  - { inst: uno, name: 'University of New Orleans'}
+  - { inst: ldl, name: 'Louisiana Digital Library'}
 
 simple_vars:
   - { name: site_frontpage, value: islandora-collection-landing-pages }
