@@ -1,7 +1,7 @@
 ---
 - include: site-symlinks.yml
 - include: modules.yml
-- include: features.yml
+#- include: features.yml
 - include: variables.yml
 - include: reverse-proxy.yml
   when: drupal_reverse_proxy
