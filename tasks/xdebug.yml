@@ -1,0 +1,33 @@
+---
+###################
+# xdebug
+- name: rm xdebug.ini
+  file:
+    state: absent
+    path: /etc/php5/mods-available/xdebug.ini
+
+- name: Install xdebug
+  apt:
+    name: php5-xdebug
+  when: environment_type == 'dev'
+
+# xdebug
+- name: rm xdebug.ini
+  file:
+    state: absent
+    dest: /etc/php5/mods-available/xdebug.ini
+
+- name: Xdebug config
+  blockinfile:
+    dest: /etc/php5/mods-available/xdebug.ini
+    marker:  ; {mark} ANSIBLE MANAGED BLOCK
+    create: yes
+    block: |
+      [xdebug]
+      zend_extension=xdebug.so
+      xdebug.default_enable=1
+      xdebug.remote_enable=1
+      xdebug.remote_handler=dbgp
+      xdebug.remote_host={{ xdebug_remote_host }}
+      xdebug.remote_port=9000
+  when: environment_type == 'dev'

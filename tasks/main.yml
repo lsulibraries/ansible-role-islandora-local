@@ -1,23 +1,5 @@
 ---
 - include: site-symlinks.yml
+- include: theme.yml
+- include: collections.yml
 - include: modules.yml
-#- include: features.yml
-- include: variables.yml
-- include: reverse-proxy.yml
-  when: drupal_reverse_proxy
-
-- name: reset permissions in modules dir
-  file:
-    state: directory
-    path: "{{ drupal_core_path }}/sites/all/modules"
-    owner: www-data
-    group: www-data
-    recurse: true
-
-- name: reset permissions in themes dir
-  file:
-    state: directory
-    path: "{{ drupal_core_path }}/sites/all/themes"
-    owner: www-data
-    group: www-data
-    recurse: true
