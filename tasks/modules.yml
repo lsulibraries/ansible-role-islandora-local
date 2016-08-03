@@ -3,9 +3,23 @@
   command: "drush -n dl {{ new_modules }}"
   args:
     chdir: "{{drupal_core_path }}"
+    
+    
+- name: Clone mods
+  git: 
+    repo: "{{ item.repo }}"
+    dest: "{{ drupal_core_path }}/sites/all/modules/{{ item.dirname }}"
+  with_items: "{{ modules_to_clone }}"
 
-- name: enable modules via drush
+
+- name: enable contrib modules via drush
   command: "drush -y en {{ modules_to_enable }}"
+  args:
+    chdir: "{{ drupal_core_path }}/sites/{{ item }}"
+  with_items: "{{ institutions }}"
+  
+- name: enable local features via drush 
+  command: "drush -y en {{ local_features }}"
   args:
     chdir: "{{ drupal_core_path }}/sites/{{ item }}"
   with_items: "{{ institutions }}"
