@@ -23,9 +23,9 @@ new_modules: blockexport ckeditor context delta devel diff features feeds feeds_
 
 modules_to_clone:
   - { repo: 'https://github.com/lsulibraries/islandora_mods_display', dirname: islandora_mods_display }
-  - { repo: 'https://github.com/mjordan/islandora_bulk_delete', dirname: 'islandora_bulk_delete'}
-  - { repo: 'https://github.com/lsulibraries/islandora-features', dirname: 'islandora-features'}
-  
+  - { repo: 'https://github.com/mjordan/islandora_bulk_delete', dirname: 'islandora_bulk_delete' }
+  - { repo: 'https://github.com/lsulibraries/islandora-features', dirname: 'islandora-features' }
+
 modules_to_enable: blockexport ckeditor context delta* diff features feeds feeds_tamper feeds_ui feeds_tamper_ui googleanalytics google_analytics_reports module_filter omega_tools views_ui
 
 local_features: solr_lsu_settings metadata_display_lsu islandora_collection_landing_pages block_setting_ldl_theme islandora_mods_display roles_and_permissions
