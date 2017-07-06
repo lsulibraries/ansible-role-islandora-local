@@ -18,22 +18,6 @@ local_features:
   - roles_and_permissions
 
 site_names:
-  - { inst: hnoc, name: 'Historic New Orleans Collection' }
-  - { inst: latech, name: latech}
-  - { inst: loyno, name: loyno}
-  - { inst: lsm, name: lsm}
-  - { inst: lsu, name: lsu}
-  - { inst: lsuhsc, name: lsuhsc}
-  - { inst: lsuhscs, name: lsuhscs}
-  - { inst: mcneese, name: mcneese}
-  - { inst: nicholls, name: nicholls}
-  - { inst: state, name: state}
-  - { inst: subr, name: subr}
-  - { inst: tahil, name: tahil}
-  - { inst: tulane, name: tulane}
-  - { inst: ull, name: ull}
-  - { inst: ulm, name: ulm}
-  - { inst: uno, name: uno}
   - { inst: ldl, name: ldl}
 
 simple_vars:
