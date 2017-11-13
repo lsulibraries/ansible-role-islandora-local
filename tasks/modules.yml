@@ -1,18 +1,71 @@
 ---
-- name: Fetch modules via drush
-  command: "drush -n dl {{ drush_dl_able_modules }}"
-  args:
-    chdir: "{{drupal_core_path }}"
+# - name: Fetch modules via drush
+#   command: "drush -n dl {{ drush_dl_able_modules }}"
+#   args:
+#     chdir: "{{drupal_core_path }}"
 
-- name: Clone mods
-  git: 
+# - name: Clone mods
+#   git: 
+#     repo: "{{ item.repo }}"
+#     dest: "{{ drupal_core_path }}/sites/all/modules/{{ item.dirname }}"
+#   with_items: "{{ modules_to_clone }}"
+
+
+# - name: Enable mods
+#   command: 'drush -y en {{ modules_to_enable }}'
+#   args:
+#     chdir: "{{ drupal_core_path }}/sites/{{ item }}"
+#   with_items: "{{ institutions }}"
+
+
+- name: Get git repos.
+  git:
     repo: "{{ item.repo }}"
-    dest: "{{ drupal_core_path }}/sites/all/modules/{{ item.dirname }}"
-  with_items: "{{ modules_to_clone }}"
+    dest: '{{drupal_core_path}}{{ item.dest }}'
+    force: true
+    version: "{{ item.version }}"
+  with_items: "{{ git_versions }}"
 
-
-- name: Enable mods
-  command: 'drush -y en {{ modules_to_enable }}'
+- name: Download drupal contribs.
+  command: "drush dl -y {{ item }}"
   args:
-    chdir: "{{ drupal_core_path }}/sites/{{ item }}"
-  with_items: "{{ institutions }}"
+    chdir: '{{ drupal_core_path }}'
+  with_items: "{{ drush_dl }}"
+
+- name: set permissions.
+  shell: "sh /opt/scripts/drupal-permissions/drupal-fix-permissions.sh --drupal_path={{ drupal_core_path }} --drupal_user=root --httpd_group=www-data"
+
+- name: Enable modules.
+  command: "drush -u 1 -y en {{ item }}"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  with_items: "{{ drush_en }}"
+
+- name: Disable unsued modules.
+  command: "drush dis -y {{ item }}"
+  args:
+    chdir: '{{ drupal_core_path }}'
+  with_items: "{{ drush_dis }}"
+
+- name: Get rid of old seadragon lib.
+  file:
+    state: absent
+    path: '{{ drupal_core_path }}/sites/all/libraries/openseadragon'
+
+- name: Get new seadragon lib.
+  unarchive:
+    src: https://github.com/openseadragon/openseadragon/releases/download/v2.2.1/openseadragon-bin-2.2.1.zip
+    remote_src: true
+    dest: '{{ drupal_core_path }}/sites/all/libraries/'
+    owner: www-data
+    group: www-data
+
+- name: Rename seadragon
+  command: mv openseadragon-bin-2.2.1 openseadragon
+  args:
+    chdir: '{{ drupal_core_path }}/sites/all/libraries'
+
+- name: Update drupal db for seadragon changes.
+  command: drush -y updatedb
+  args:
+    chdir: '{{ drupal_core_path }}'

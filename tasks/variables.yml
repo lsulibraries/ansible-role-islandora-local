@@ -1,14 +1,54 @@
 ---
-- name: set simple vars
-  command: 'drush vset {{ item[1].name }} {{ item[1].value }}'
+- name: Set simple key => val variables.
+  command: drush -u 1 vset {{ item.key }} {{ item.value }}
   args:
-    chdir: "{{ drupal_core_path }}/sites/{{ item[0] }}"
-  with_nested: 
-    - "{{ institutions }}"
-    - "{{ simple_vars }}"
+    chdir: "{{ drupal_core_path }}"
+  with_items: "{{ drush_vset_simple }}"
 
-- name: set site name
-  command: 'drush vset site_name {{ item.name  }}'
+# - name: set simple vars
+#   command: 'drush vset {{ item[1].name }} {{ item[1].value }}'
+#   args:
+#     chdir: "{{ drupal_core_path }}/sites/{{ item[0] }}"
+#   with_nested: 
+#     - "{{ institutions }}"
+#     - "{{ simple_vars }}"
+
+# - name: set site name
+#   command: 'drush vset site_name {{ item.name  }}'
+#   args:
+#     chdir: "{{ drupal_core_path }}/sites/{{ item.inst }}"
+#   with_items: "{{ site_names }}"
+
+- name: 'Set site_email to something other than example.com. ## 2016101311'
+  command: drush vset site_mail admin@{{ fqdn_suffix }}
   args:
-    chdir: "{{ drupal_core_path }}/sites/{{ item.inst }}"
-  with_items: "{{ site_names }}"
+    chdir: "{{ drupal_core_path }}"
+
+## needs manual check - email addr
+- name: 'Set update_notify_emails to something other than example.com. ## 2016101311'
+  command: drush vset --format=json update_notify_emails '["admin@example.com"]'
+  args:
+    chdir: "{{ drupal_core_path }}"
+
+- name: 'Set reroute enabled. ## 2016101311'
+  command: drush vset reroute_email_enable 1
+  args:
+    chdir: "{{ drupal_core_path }}"
+  when: environment_type != "production"
+
+## needs manual check - email addr
+- name: 'Set reroute_email_address. ## 2016101311'
+  command: drush vset reroute_email_address admin@example.com
+  args:
+    chdir: "{{ drupal_core_path }}"
+  when: environment_type != "production"
+
+- name: 'set djatoka var correctly ## 2016103114'
+  command: drush vset islandora_paged_content_djatoka_url http://{{ fqdn_suffix }}/adore-djatoka/
+  args:
+    chdir: "{{ drupal_core_path }}"
+
+- name: configure seadragon
+  args:
+    chdir: "{{ drupal_core_path }}/sites/ldl"
+  command: "drush -u 1 ev \"variable_set(\'islandora_openseadragon_settings\', {{ seadragon_settings }})\""

@@ -1,0 +1,257 @@
+# system.yml
+- name: remove xdebug.ini (for now)
+  file:
+    path: /etc/php5/cli/conf.d/20-xdebug.ini
+    state: absent
+
+- name: Enable drupal reverse proxy
+  lineinfile:
+    line: "$conf['reverse_proxy'] = TRUE;"
+    regexp: "#$conf['reverse_proxy'] = TRUE;"
+    dest: "{{ drupal_core_path }}/sites/default/settings.php"
+  when: drupal_reverse_proxy
+
+- name: Specify drupal reverse proxy addresses
+  lineinfile:
+    line: "$conf['reverse_proxy_addresses'] = array('{{ drupal_reverse_proxies_ips }}');"
+    regexp: "# $conf['reverse_proxy_addresses'] = array('a.b.c.d', ...);"
+    dest: "{{ drupal_core_path }}/sites/default/settings.php"
+  when: drupal_reverse_proxy
+
+- name: 'setup drupal cron for each site ## 2016092210'
+  blockinfile:
+    create: true
+    dest: /etc/cron.d/drupal-cron
+    block: |
+      6  * * * * root /usr/local/bin/drush --root=/var/www/ldl --quiet cron
+
+- name: 'update permissions ## 2016092314'
+  file:
+    path: '{{ drupal_core_path }}/sites'
+    owner: www-data
+    group: www-data
+    mode: 755
+    recurse: true
+
+- name: update drupal cron block.
+    ## 2016101111'
+  blockinfile:
+    marker: '# {mark} drupal cron block'
+    dest: /etc/cron.d/drupal-cron
+    block: |
+      0  * * * * root /usr/local/bin/drush --root=/var/www/ldl --quiet cron
+
+- name: 'block access to cron.php at the webserver ## 2016101111'
+  blockinfile:
+    marker: '# {mark} Begin Ansible managed <files> section.'
+    block: |
+      <Files "cron.php">
+        Order Deny,Allow
+        Deny from all
+      </Files>
+    dest: /etc/apache2/sites-enabled/vhosts.conf
+    insertbefore: </VirtualHost>
+
+## needs manual check - var
+- name: 'Create file with postfix debconf values for dev environments. ## 2016101311'
+  blockinfile:
+    block: |
+      postfix postfix/mailname string {{ fqdn_suffix }}
+      postfix postfix/main_mailer_type string Satellite system
+      postfix postfix/recipient_delim string +
+      postfix postfix/relayhost string relay.lsu.edu
+      postfix postfix/procmail string false
+      postfix postfix/mynetworks string 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+      postfix postfix/mailbox_limit string 0
+      postfix postfix/destinations string vagrant-ubuntu-trusty-64, localhost.localdomain, , localhost
+      postfix postfix/rfc1035_violation string false
+      postfix postfix/protocols string all
+      postfix postfix/chattr string false
+    create: true
+    dest: '~/postfix.conf'
+  when: environment_type == 'dev'
+
+## needs manual check - var
+- name: 'Create file with postfix debconf values. ## 2016101311'
+  blockinfile:
+    block: |
+      postfix postfix/retry_upgrade_warning   boolean
+      postfix postfix/bad_recipient_delimiter error
+      postfix postfix/relayhost       string
+      postfix postfix/recipient_delim string  +
+      postfix postfix/sqlite_warning  boolean
+      postfix postfix/tlsmgr_upgrade_warning  boolean
+      postfix postfix/main_mailer_type        select  Internet Site
+      postfix postfix/root_address    string
+      postfix postfix/relay_restrictions_warning      boolean
+      postfix postfix/not_configured  error
+      postfix postfix/mydomain_warning        boolean
+      # Install postfix despite an unsupported kernel?
+      postfix postfix/kernel_version_warning  boolean
+      postfix postfix/destinations    string  {{ fqdn_suffix }}, localhost
+      postfix postfix/protocols       select  all
+      postfix postfix/mailbox_limit   string  0
+      postfix postfix/procmail        boolean false
+      postfix postfix/chattr  boolean false
+      postfix postfix/rfc1035_violation       boolean false
+      postfix postfix/mynetworks      string  127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+      postfix postfix/mailname        string  {{ fqdn_suffix }}
+    create: true
+    dest: '~/postfix.conf'
+  when: environment_type != 'dev'
+
+## needs manual check - var
+- name: 'debconf set-selections. ## 2016101311'
+  command: debconf-set-selections '~/postfix.conf'
+
+- name: 'install postfix ## 2016101311'
+  apt:
+    name: postfix
+
+- name: 'set logging path for gsearch ## 2016110210'
+  replace:
+    dest: /var/lib/tomcat7/webapps/fedoragsearch/FgsConfig/log4j.xml
+    regexp: <param name="File" value="LOGPATH/fedoragsearch.daily.log"/>
+    replace: <param name="File" value="/var/lib/tomcat7/webapps/fedoragsearch.daily.log"/>
+
+- name: 'symlink edited log4j.xml into classpath for gsearch ## 2016110210'
+  copy:
+    remote_src: true
+    dest: /var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/log4j.xml
+    src: /var/lib/tomcat7/webapps/fedoragsearch/FgsConfig/log4j.xml
+    owner: tomcat7
+    group: tomcat7
+
+- name: 'Install cron job to clean Tomcat logs... ## 2016111610'
+  blockinfile:
+    block: |
+      * 23 * * * root find /var/log/tomcat7/ -mtime +3 -delete
+    marker: '# {mark} ANSIBLE: Tomcat log retention policy'
+    dest: /etc/cron.d/tomcat-logging
+    create: true
+
+- name: 'Set GSearch logging level to WARN. ## 2016112310'
+  command: sed -i 's/LOGLEVEL/WARN/g' log4j.xml
+  args:
+    chdir: /var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes
+
+- name: 'Set the logging location to the tomcat location where logs are deleted
+    every 7 days. ## 2016112310'
+  command: sed -i 's#/var/lib/tomcat7/webapps/fedoragsearch.daily.log#/var/log/tomcat7/fedoragsearch.daily.log#g'
+    log4j.xml
+  args:
+    chdir: /var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes
+
+# - name: 'ensure permissions ## 2016121409 # 2016120214'
+#   file:
+#     path: '{{ drupal_core_path }}/sites/all/themes/ldl'
+#     mode: 488
+#     owner: root
+#     group: www-data
+
+- name: 'Ensure scripts directory exists. ## 2016120813'
+  file:
+    path: /opt/scripts/
+    state: directory
+    owner: root
+    group: root
+    mode: 755
+
+- name: 'Get Drupal permissions script. ## 2016120813'
+  git:
+    repo: https://gist.github.com/e823f19ecb6eb74e14c5e9fda01a832c.git
+    dest: /opt/scripts/drupal-permissions
+    force: true
+  register: git_deploy
+  until: git_deploy|succeeded
+
+- name: 'Make it executable. ## 2016120813'
+  file:
+    path: /opt/scripts/drupal-permissions/drupal-fix-permissions.sh
+    mode: 755
+    owner: root
+    group: root
+
+- name: 'Ensure cron line is set. ## 2016120813'
+  lineinfile:
+    line: 59 * * * * root sh /opt/scripts/drupal-permissions/drupal-fix-permissions.sh
+      --drupal_path=/var/www/ldl --drupal_user=root --httpd_group=www-data
+    dest: /etc/cron.d/drupal-cron
+    insertbefore: BOF
+  when: environment_type != 'dev'
+
+## manual check ?  
+- name: 'Remove old funky dupe cron job, if exists. ## 2016120813'
+  file:
+    path: /etc/cron.d/drcron
+    state: absent
+
+- name: 'Ensure unneeded xacml is not present. ## 2016120914'
+  file:
+    path: '{{ fedora_home }}/data/fedora-xacml-policies/repository-policies/default/{{
+      item }}'
+    state: absent
+  with_items:
+  - deny-inactive-or-deleted-objects-or-datastreams-if-not-administrator.xml
+  - deny-policy-management-if-not-administrator.xml
+  - deny-unallowed-file-resolution.xml
+
+- name: 'Set timezone. ## 2016121510'
+  shell: timedatectl set-timezone America/Chicago
+
+- name: 'Install ntp ## 2016121510'
+  apt:
+    name: ntp
+
+- name: 'Ensure the NTP servers are set. ## 2016121510'
+  blockinfile:
+    dest: /etc/ntp.conf
+    insertbefore: server 0.ubuntu.pool.ntp.org
+    block: |
+      # LSU's ntp servers.
+      server ntp1.lsu.edu
+      server ntp2.lsu.edu
+      server ntp3.lsu.edu
+
+      # From askubuntu: http://askubuntu.com/questions/340633/synchronise-clocks-on-ubuntu-running-in-ec2
+      server 0.amazon.pool.ntp.org
+      server 1.amazon.pool.ntp.org
+      server 2.amazon.pool.ntp.org
+      server 3.amazon.pool.ntp.org
+
+- name: 'Restart NTP. ## 2016121510'
+  service:
+    name: ntp
+    state: restarted
+
+- name: 'Ensure collection search dependencies are included by main xslt. ## 2017010911'
+  blockinfile:
+    block: "<xsl:include href=\"/var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/library/traverse-graph.xslt\"/>\n<xsl:include
+      href=\"/var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/hierarchy.xslt\"/>
+      \             \n"
+    insertbefore: <xsl:include href="/var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/DC_to_solr.xslt"/>
+    dest: /var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/foxmlToSolr.xslt
+    marker: <!-- {mark} ANSIBLE MANAGED BLOCK- Collection Search -->
+
+- name: 'Replace foxmlToSolr.xslt with correct version. ## 2017012517'
+  copy:
+    src: files/foxmlToSolr.xslt
+    dest: /var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/foxmlToSolr.xslt
+    owner: tomcat7
+    group: tomcat7
+    backup: true
+
+- name: Clone xml_forms.
+  git:
+    version: fe155b45529d533f828df624d45cc1e48fb1714b
+    repo: https://github.com/lsulibraries/islandora_ingest_forms
+    dest: "/opt/islandora_ingest_forms"
+    force: yes
+  register: git_deploy
+  until: git_deploy|succeeded
+
+- name: 'Copy files into place ## 2017071013'
+  copy:
+    src: /opt/islandora_ingest_forms/Self_XSLT/blankNodes.xsl
+    dest: '{{ drupal_core_path }}/sites/all/modules/islandora_xml_forms/builder/self_transforms/blankNodes.xsl'
+    remote_src: true
