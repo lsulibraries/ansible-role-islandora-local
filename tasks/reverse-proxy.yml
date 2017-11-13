@@ -1,15 +1,15 @@
 ---
 
-- name: Enable drupal reverse proxy
-  lineinfile:
-    line: "$conf['reverse_proxy'] = TRUE;"
-    regexp: "#$conf['reverse_proxy'] = TRUE;"
-    dest: "{{ drupal_core_path }}/sites/{{ item }}/settings.php"
-  with_items: "{{ institutions }}"
+# - name: Enable drupal reverse proxy
+#   lineinfile:
+#     line: "$conf['reverse_proxy'] = TRUE;"
+#     regexp: "#$conf['reverse_proxy'] = TRUE;"
+#     dest: "{{ drupal_core_path }}/sites/default/settings.php"
+#   when: drupal_reverse_proxy
 
-- name: Specify drupal reverse proxy addresses
-  lineinfile:
-    line: "$conf['reverse_proxy_addresses'] = array('{{ drupal_reverse_proxies_ips }}');"
-    regexp: "# $conf['reverse_proxy_addresses'] = array('a.b.c.d', ...);"
-    dest: "{{ drupal_core_path }}/sites/{{ item }}/settings.php"
-  with_items: "{{ institutions }}"
+# - name: Specify drupal reverse proxy addresses
+#   lineinfile:
+#     line: "$conf['reverse_proxy_addresses'] = array('{{ drupal_reverse_proxies_ips }}');"
+#     regexp: "# $conf['reverse_proxy_addresses'] = array('a.b.c.d', ...);"
+#     dest: "{{ drupal_core_path }}/sites/default/settings.php"
+#   when: drupal_reverse_proxy

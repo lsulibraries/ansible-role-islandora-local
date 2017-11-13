@@ -1,0 +1,29 @@
+# roles-permissions.yml
+
+- name: create roles via drush
+  command: "drush role-create '{{ item }}'"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  with_items: "{{ drush_role_create }}"
+  ignore_errors: yes
+
+- name: Add permissions to roles.
+  command: "drush role-add-perm '{{ item.role }}' '{{ item.perm }}'"
+  args:
+    chdir: "{{ drupal_core_path }}"
+  with_items: "{{ drush_role_add_perm }}"
+
+- name: 'Set perms for toggle. ## 2017021408'
+  command: drush role-add-perm '{{ item }}' 'Administer published/unpublished
+    collection setting.'
+  args:
+    chdir: '{{ drupal_core_path }}'
+  with_items:
+    - collection admin
+    - administrator
+
+- name: 'remove perms for intern. ## 2017080815'
+  command: "drush role-remove-perm '{{ item.role }}' '{{ item.perm }}'"
+  args:
+    chdir: '{{ drupal_core_path }}'
+  with_items: "{{ drush_role_remove_perm }}"

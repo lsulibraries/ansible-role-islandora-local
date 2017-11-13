@@ -1,0 +1,44 @@
+# content.yml
+- name: 'make block of default collection for deleting ## 2016092614'
+  blockinfile:
+    create: true
+    dest: /tmp/pid_delete.txt
+    block: |
+      islandora:sp_pdf_collection
+      islandora:entity_collection
+      islandora:newspaper_collection
+      islandora:audio_collection
+      islandora:bookCollection
+      islandora:compound_collection
+      islandora:sp_disk_image_collection
+      islandora:sp_basic_image_collection
+      islandora:sp_large_image_collection
+      islandora:sp_web_archive_collection
+      islandora:video_collection
+      ir:citationCollection
+
+- name: 'bulk delete default bookcollection ## 2016092614'
+  command: drush iChainsaw -y --user=admin --pid_file=/tmp/pid_delete.txt
+  args:
+    chdir: '{{ drupal_core_path  }}'
+
+- name: 'Use ip embargo. ## 2016120915'
+  command: drush iipeadd --low=141.164.0.0 --high=141.164.255.255 --list=loyno
+  args:
+    chdir: "{{ drupal_core_path }}"
+  ignore_errors: true
+
+- name: 'create-nodes per institution at institution subsite ## 2017020614'
+  command: drush create-node -u 1 --path=ip-embargo-403 --title=ip-embargo-redirect
+    --body="403. You have been re-directed due to ip-embargo. This item is restricted."
+    --type=page
+  args:
+    chdir: '{{ drupal_core_path }}'
+
+- name: create pid_file for chainsaw oh collection.
+  shell: echo "islandora:oh_collection" > /tmp/oh
+
+- name: 'delete oh cmodel default collection'
+  command: drush iChainsaw -y --user=admin --pid_file=/tmp/oh
+  args:
+    chdir: '{{ drupal_core_path  }}'

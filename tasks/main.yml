@@ -1,23 +1,25 @@
 ---
-- include: site-symlinks.yml
+- include: system.yml
 - include: modules.yml
-#- include: features.yml
 - include: variables.yml
-- include: reverse-proxy.yml
-  when: drupal_reverse_proxy
+- include: roles-permissions.yml
+- include: content.yml
 
-- name: reset permissions in modules dir
-  file:
-    state: directory
-    path: "{{ drupal_core_path }}/sites/all/modules"
-    owner: www-data
-    group: www-data
-    recurse: true
+- name: 'Restart tomcat ## 2017012517 # 2016112310'
+  service:
+    name: tomcat7
+    state: restarted
 
-- name: reset permissions in themes dir
-  file:
-    state: directory
-    path: "{{ drupal_core_path }}/sites/all/themes"
-    owner: www-data
-    group: www-data
-    recurse: true
+- name: feature revert
+  command: drush fra -y
+  args:
+    chdir: '{{ drupal_core_path }}'
+
+- name: clear cache
+  command: drush cc all
+  args:
+    chdir: '{{ drupal_core_path }}'
+
+- name: set permissions.
+  shell: "sh /opt/scripts/drupal-permissions/drupal-fix-permissions.sh --drupal_path={{ drupal_core_path }} --drupal_user=root --httpd_group=www-data"
+  when: environment_type != 'dev'
